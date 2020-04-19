@@ -25,6 +25,9 @@ group = project.projectDir.name.toLowerCase()
 def modId = project.projectDir.name
 archivesBaseName = modId + "-mc" + project.minecraft.version
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 if (version == "unspecified")
 	version = ""
 if (System.getenv("TRAVIS_BUILD_NUMBER") != null)
