@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = ModInfo.MODID, version = ModInfo.VERSION, acceptableRemoteVersions="*", guiFactory = ModInfo.GUI_FACTORY_CLASS)
+@Mod(modid = ModInfo.MODID, name = ModInfo.MODID, version = ModInfo.VERSION, acceptableRemoteVersions="*", guiFactory = ModInfo.GUI_FACTORY_CLASS)
 public class AppleCore
 {
 	public static Logger Log = LogManager.getLogger(ModInfo.MODID);
