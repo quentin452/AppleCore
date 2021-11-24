@@ -17,7 +17,7 @@ public abstract class BlockPamSaplingMixin extends BlockFlower {
         super(0);
     }
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract void markOrGrowMarked(World world, int blockX, int blockY, int blockZ, Random random);
 
     // @Override

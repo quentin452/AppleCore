@@ -1,9 +1,15 @@
 // Add your dependencies here
 
 dependencies {
-    compileOnly("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev")
-    compileOnly("curse.maven:natura-74120:2257670")  // TODO: replace with in-house dependency; set mixins to be mapped
+    compileOnly("com.github.GTNewHorizons:CodeChickenLib:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Natura:master-SNAPSHOT:dev") {
+        transitive = false
+    }
 
     // Do not set to compile instead of compileOnly! It will not run in dev!
-    compileOnly("curse.maven:pams-harvestcraft-221857:2270206")
+    compileOnly("curse.maven:pams-harvestcraft-221857:2270206") {
+        transitive = false
+    }
 }

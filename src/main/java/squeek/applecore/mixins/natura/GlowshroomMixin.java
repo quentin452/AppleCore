@@ -23,13 +23,13 @@ public class GlowshroomMixin extends BlockMushroom {
     @Unique
     private Event.Result allowGrowthResult;
 
-    @Inject(method = "func_149674_a", at = @At("HEAD"), remap = false)
+    @Inject(method = "updateTick", at = @At("HEAD"))
     private void beforeUpdateTick(World world, int blockX, int blockY, int blockZ, Random random, CallbackInfo callbackInfo) {
         allowGrowthResult = AppleCoreAPI.dispatcher.validatePlantGrowth(this, world, blockX, blockY, blockZ, random);
         previousMetadata = world.getBlockMetadata(blockX, blockY, blockZ);
     }
 
-    @Redirect(method = "func_149674_a", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"), remap = false)
+    @Redirect(method = "updateTick", at = @At(value = "INVOKE", target = "Ljava/util/Random;nextInt(I)I"))
     private int redirectNextInt(Random random, int limit25) {
         if(allowGrowthResult == Event.Result.ALLOW) {
             return 0;  // true
@@ -40,11 +40,10 @@ public class GlowshroomMixin extends BlockMushroom {
         return -1;  // false
     }
 
-    @Inject(method = "func_149674_a",
+    @Inject(method = "updateTick",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/world/World;func_147465_d(IIILnet/minecraft/block/Block;II)Z",
-                    shift = At.Shift.AFTER)
-            , remap = false)
+                    target = "Lnet/minecraft/world/World;setBlock(IIILnet/minecraft/block/Block;II)Z",
+                    shift = At.Shift.AFTER))
     private void afterSetBlock(World world, int blockX, int blockY, int blockZ, Random random, CallbackInfo callbackInfo) {
         AppleCoreAPI.dispatcher.announcePlantGrowth(this, world, blockX, blockY, blockZ, previousMetadata);
     }

@@ -13,14 +13,14 @@ import java.util.Random;
 @Mixin(CropBlock.class)
 public abstract class CropBlockMixin extends BlockBush {
 
-    @Shadow
+    @Shadow(remap = false)
     public abstract int getMaxGrowth(int metadata);
 
-    @Shadow
+    @Shadow(remap = false)
     protected abstract float getGrowthRate(World world, int blockX, int blockY, int blockZ, int metadata, int light);
 
-    // @Override
-    public void func_149674_a(World world, int blockX, int blockY, int blockZ, Random random) {
+    @Override
+    public void updateTick(World world, int blockX, int blockY, int blockZ, Random random) {
         checkAndDropBlock(world, blockX, blockY, blockZ);
         int light = world.getBlockLightValue(blockX, blockY, blockZ);
         Event.Result allowGrowthResult = AppleCoreAPI.dispatcher.validatePlantGrowth(this, world, blockX, blockY, blockZ, random);

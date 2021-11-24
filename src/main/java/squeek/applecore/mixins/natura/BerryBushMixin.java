@@ -17,8 +17,8 @@ public class BerryBushMixin extends BlockLeavesBase {
         super(null, false);
     }
 
-    // @Override
-    public void func_149674_a(World world, int blockX, int blockY, int blockZ, Random random) {
+    @Override
+    public void updateTick(World world, int blockX, int blockY, int blockZ, Random random) {
         if (!world.isRemote) {
             int height;
             for(height = 1; world.getBlock(blockX, blockY - height, blockZ) == this; ++height) {
