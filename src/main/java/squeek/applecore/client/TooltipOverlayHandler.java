@@ -18,7 +18,6 @@ import squeek.applecore.ModConfig;
 import squeek.applecore.ModInfo;
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodValues;
-import squeek.applecore.asm.Hooks;
 import squeek.applecore.helpers.KeyHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -47,6 +46,7 @@ public class TooltipOverlayHandler
 	private static boolean neiLoaded = false;
 	private static Class<?> foodJournalGui = null;
 	private static Field foodJournalHoveredStack = null;
+	public static int toolTipX, toolTipY, toolTipW, toolTipH;
 	static
 	{
 		try
@@ -154,16 +154,16 @@ public class TooltipOverlayHandler
 						saturationBarsNeeded = 1;
 
 					boolean needsCoordinateShift = !neiLoaded || isFoodJournalGui;
-					//int toolTipTopY = Hooks.toolTipY;
-					//int toolTipLeftX = Hooks.toolTipX;
-					int toolTipBottomY = Hooks.toolTipY + Hooks.toolTipH + 1 + (needsCoordinateShift ? 3 : 0);
-					int toolTipRightX = Hooks.toolTipX + Hooks.toolTipW + 1 + (needsCoordinateShift ? 3 : 0);
+					//int toolTipTopY = toolTipY;
+					//int toolTipLeftX = toolTipX;
+					int toolTipBottomY = toolTipY + toolTipH + 1 + (needsCoordinateShift ? 3 : 0);
+					int toolTipRightX = toolTipX + toolTipW + 1 + (needsCoordinateShift ? 3 : 0);
 
 					boolean shouldDrawBelow = toolTipBottomY + 20 < scale.getScaledHeight() - 3;
 
 					int rightX = toolTipRightX - 3;
 					int leftX = rightX - (Math.max(barsNeeded * 9, saturationBarsNeeded * 6 + (int) (mc.fontRenderer.getStringWidth(saturationText) * 0.75f))) - 4;
-					int topY = (shouldDrawBelow ? toolTipBottomY : Hooks.toolTipY - 20 + (needsCoordinateShift ? -4 : 0));
+					int topY = (shouldDrawBelow ? toolTipBottomY : toolTipY - 20 + (needsCoordinateShift ? -4 : 0));
 					int bottomY = topY + 20;
 
 					boolean wasLightingEnabled = GL11.glIsEnabled(GL11.GL_LIGHTING);
