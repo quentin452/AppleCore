@@ -34,7 +34,7 @@ public enum Mixin {
     BlockPamSaplingMixin("harvestcraft.BlockPamSaplingMixin", HARVESTCRAFT),
 
     BerryBushMixin("natura.BerryBushMixin", NATURA),
-    NetherBerryBushMixin("natural.NetherBerryBushMixin", NATURA);
+    NetherBerryBushMixin("natura.NetherBerryBushMixin", NATURA);
 
     public final String mixinClass;
     public final List<TargetedMod> targetedMods;
