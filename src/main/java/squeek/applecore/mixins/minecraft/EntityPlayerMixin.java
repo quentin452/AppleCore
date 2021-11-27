@@ -49,6 +49,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase implements IApp
     }
 
     @Redirect(method = "getItemInUseDuration", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getMaxItemUseDuration()I"))
+    @SideOnly(Side.CLIENT)
     private int redirect(ItemStack instance) {
         EnumAction useAction = getItemInUse().getItemUseAction();
         if (useAction == EnumAction.eat || useAction == EnumAction.drink)
