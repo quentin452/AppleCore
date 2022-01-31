@@ -2,7 +2,7 @@
 
 dependencies {
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev") 
-    compileOnly("com.github.GTNewHorizons:Natura:2.4.8:dev") {
+    compileOnly("com.github.GTNewHorizons:Natura:2.4.9:dev") {
         transitive = false
     }
 
