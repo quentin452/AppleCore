@@ -20,3 +20,13 @@ An API for modifying the food and hunger mechanics of Minecraft
 ### Building AppleCore
 1. Clone the repository
 2. Open a command line and execute ```gradlew build```
+
+### License
+
+GTNH Modifications Copyright (C) 2021-2022 The GTNH Team
+
+This code is licensed LGPL v3.0 or later. Feel free to use our changes, just give back any changes you make to the community as well!
+
+Original License for AppleCore by [squeek502](https://github.com/squeek502/AppleCore):
+
+This is free and unencumbered software released into the public domain.
