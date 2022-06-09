@@ -1,14 +1,17 @@
 package squeek.applecore;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import squeek.applecore.mixinplugin.TargetedMod;
 
 public class ModConfig
 {
 	public static Configuration config;
+	
+	public static final String LANG_PREFIX = "applecore.cfg.";
 
 	/*
 	 * SERVER
@@ -63,6 +66,18 @@ public class ModConfig
 	private static final String SHOW_FOOD_DEBUG_INFO_NAME = "show.food.stats.in.debug.overlay";
 	private static final String SHOW_FOOD_DEBUG_INFO_COMMENT =
 			"If true, adds a line that shows your hunger, saturation, and exhaustion level in the F3 debug overlay";
+	
+	/*
+	 * GENERAL
+	 */
+	public static final String CATEGORY_GENERAL = Configuration.CATEGORY_GENERAL;
+    public static final String CATEGORY_GENERAL_COMMENT = "These config settings are for both server and client-side";
+	
+	public static String[] REQUIRED_MODS;
+	public static final String[] REQUIRED_MODS_DEFAULTS = Arrays.stream(TargetedMod.values()).map(mod -> mod.modName).toArray(String[]::new);
+	public static final String REQUIRED_MODS_NAME = "required.mods";
+	public static final String REQUIRED_MODS_COMMENT = "Subset of TargetMods that are required";
+	public static final Pattern REQUIRED_MODS_VALIDATION_PATTERN = Pattern.compile(String.join("|", Arrays.stream(TargetedMod.values()).map(mod -> "^" + mod.modName + "$").toArray(String[]::new)));
 
 	public static void init(File file)
 	{
@@ -70,15 +85,6 @@ public class ModConfig
 
 		load();
 		sync();
-
-		FMLCommonHandler.instance().bus().register(new ModConfig());
-	}
-
-	@SubscribeEvent
-	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
-	{
-		if (event.modID.equals(ModInfo.MODID))
-			ModConfig.sync();
 	}
 
 	public static void sync()
@@ -86,25 +92,32 @@ public class ModConfig
 		/*
 		 * SERVER
 		 */
-		config.getCategory(CATEGORY_SERVER).setComment(CATEGORY_SERVER_COMMENT);
+		config.getCategory(CATEGORY_SERVER).setLanguageKey(LANG_PREFIX + CATEGORY_SERVER).setComment(CATEGORY_SERVER_COMMENT);
 
-		EXHAUSTION_SYNC_THRESHOLD = config.get(CATEGORY_SERVER, EXHAUSTION_SYNC_THRESHOLD_NAME, EXHAUSTION_SYNC_THRESHOLD_DEFAULT, EXHAUSTION_SYNC_THRESHOLD_COMMENT).getDouble(EXHAUSTION_SYNC_THRESHOLD_DEFAULT);
+		EXHAUSTION_SYNC_THRESHOLD = config.get(CATEGORY_SERVER, EXHAUSTION_SYNC_THRESHOLD_NAME, EXHAUSTION_SYNC_THRESHOLD_DEFAULT, EXHAUSTION_SYNC_THRESHOLD_COMMENT).setLanguageKey(LANG_PREFIX + EXHAUSTION_SYNC_THRESHOLD_NAME).getDouble();
 
 		/*
 		 * CLIENT
 		 */
-		config.getCategory(CATEGORY_CLIENT).setComment(CATEGORY_CLIENT_COMMENT);
+		config.getCategory(CATEGORY_CLIENT).setLanguageKey(LANG_PREFIX + CATEGORY_CLIENT).setComment(CATEGORY_CLIENT_COMMENT);
 
 		// rename overlay to underlay
-		boolean foodExhaustionOverlayValue = config.get(CATEGORY_CLIENT, SHOW_FOOD_EXHAUSTION_OVERLAY_NAME, true).getBoolean(true);
+		boolean foodExhaustionOverlayValue = config.get(CATEGORY_CLIENT, SHOW_FOOD_EXHAUSTION_OVERLAY_NAME, true).getBoolean();
 		config.getCategory(CATEGORY_CLIENT).remove(SHOW_FOOD_EXHAUSTION_OVERLAY_NAME);
 
-		SHOW_FOOD_VALUES_IN_TOOLTIP = config.get(CATEGORY_CLIENT, SHOW_FOOD_VALUES_IN_TOOLTIP_NAME, true, SHOW_FOOD_VALUES_IN_TOOLTIP_COMMENT).getBoolean(true);
-		ALWAYS_SHOW_FOOD_VALUES_TOOLTIP = config.get(CATEGORY_CLIENT, ALWAYS_SHOW_FOOD_VALUES_TOOLTIP_NAME, false, ALWAYS_SHOW_FOOD_VALUES_TOOLTIP_COMMENT).getBoolean(false);
-		SHOW_SATURATION_OVERLAY = config.get(CATEGORY_CLIENT, SHOW_SATURATION_OVERLAY_NAME, true, SHOW_SATURATION_OVERLAY_COMMENT).getBoolean(true);
-		SHOW_FOOD_VALUES_OVERLAY = config.get(CATEGORY_CLIENT, SHOW_FOOD_VALUES_OVERLAY_NAME, true, SHOW_FOOD_VALUES_OVERLAY_COMMENT).getBoolean(true);
-		SHOW_FOOD_EXHAUSTION_UNDERLAY = config.get(CATEGORY_CLIENT, SHOW_FOOD_EXHAUSTION_UNDERLAY_NAME, foodExhaustionOverlayValue, SHOW_FOOD_EXHAUSTION_UNDERLAY_COMMENT).getBoolean(foodExhaustionOverlayValue);
-		SHOW_FOOD_DEBUG_INFO = config.get(CATEGORY_CLIENT, SHOW_FOOD_DEBUG_INFO_NAME, true, SHOW_FOOD_DEBUG_INFO_COMMENT).getBoolean(true);
+		SHOW_FOOD_VALUES_IN_TOOLTIP = config.get(CATEGORY_CLIENT, SHOW_FOOD_VALUES_IN_TOOLTIP_NAME, true, SHOW_FOOD_VALUES_IN_TOOLTIP_COMMENT).setLanguageKey(LANG_PREFIX + SHOW_FOOD_VALUES_IN_TOOLTIP_NAME).getBoolean();
+		ALWAYS_SHOW_FOOD_VALUES_TOOLTIP = config.get(CATEGORY_CLIENT, ALWAYS_SHOW_FOOD_VALUES_TOOLTIP_NAME, false, ALWAYS_SHOW_FOOD_VALUES_TOOLTIP_COMMENT).setLanguageKey(LANG_PREFIX + ALWAYS_SHOW_FOOD_VALUES_TOOLTIP_NAME).getBoolean();
+		SHOW_SATURATION_OVERLAY = config.get(CATEGORY_CLIENT, SHOW_SATURATION_OVERLAY_NAME, true, SHOW_SATURATION_OVERLAY_COMMENT).setLanguageKey(LANG_PREFIX + SHOW_SATURATION_OVERLAY_NAME).getBoolean();
+		SHOW_FOOD_VALUES_OVERLAY = config.get(CATEGORY_CLIENT, SHOW_FOOD_VALUES_OVERLAY_NAME, true, SHOW_FOOD_VALUES_OVERLAY_COMMENT).setLanguageKey(LANG_PREFIX + SHOW_FOOD_VALUES_OVERLAY_NAME).getBoolean();
+		SHOW_FOOD_EXHAUSTION_UNDERLAY = config.get(CATEGORY_CLIENT, SHOW_FOOD_EXHAUSTION_UNDERLAY_NAME, foodExhaustionOverlayValue, SHOW_FOOD_EXHAUSTION_UNDERLAY_COMMENT).setLanguageKey(LANG_PREFIX + SHOW_FOOD_EXHAUSTION_UNDERLAY_NAME).getBoolean();
+		SHOW_FOOD_DEBUG_INFO = config.get(CATEGORY_CLIENT, SHOW_FOOD_DEBUG_INFO_NAME, true, SHOW_FOOD_DEBUG_INFO_COMMENT).setLanguageKey(LANG_PREFIX + SHOW_FOOD_DEBUG_INFO_NAME).getBoolean();
+		
+		/*
+		 * GENERAL
+		 */
+        config.getCategory(CATEGORY_GENERAL).setLanguageKey(LANG_PREFIX + CATEGORY_GENERAL).setComment(CATEGORY_GENERAL_COMMENT);
+        
+		REQUIRED_MODS = config.get(CATEGORY_GENERAL, REQUIRED_MODS_NAME, REQUIRED_MODS_DEFAULTS, REQUIRED_MODS_COMMENT, false, TargetedMod.values().length, REQUIRED_MODS_VALIDATION_PATTERN).setLanguageKey(LANG_PREFIX + REQUIRED_MODS_NAME).setRequiresMcRestart(true).getStringList();
 
 		if (config.hasChanged())
 			save();
