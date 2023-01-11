@@ -30,6 +30,11 @@ public abstract class FoodStatsMixin implements IAppleCorePlayerStats {
 
     private int starveTimer;
 
+    @Override
+    public void setStarveTimer(int starveTimer) {
+        this.starveTimer = starveTimer;
+    }
+
     @Shadow
     private int foodLevel;
 
