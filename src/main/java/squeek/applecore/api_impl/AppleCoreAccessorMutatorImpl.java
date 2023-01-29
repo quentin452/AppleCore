@@ -1,13 +1,10 @@
 package squeek.applecore.api_impl;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.lang.reflect.Field;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.MinecraftForge;
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.IAppleCoreAccessor;
@@ -18,11 +15,13 @@ import squeek.applecore.api.food.IEdible;
 import squeek.applecore.api.hunger.ExhaustionEvent;
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
+import squeek.applecore.mixinplugin.ducks.FoodStatsExt;
+import squeek.applecore.mixins.early.minecraft.accessors.FoodStatsAccessor;
 
 public enum AppleCoreAccessorMutatorImpl implements IAppleCoreAccessor, IAppleCoreMutator {
     INSTANCE;
 
-    private AppleCoreAccessorMutatorImpl() {
+    AppleCoreAccessorMutatorImpl() {
         AppleCoreAPI.accessor = this;
         AppleCoreAPI.mutator = this;
     }
@@ -48,11 +47,15 @@ public enum AppleCoreAccessorMutatorImpl implements IAppleCoreAccessor, IAppleCo
     @Override
     public FoodValues getUnmodifiedFoodValues(ItemStack food) {
         if (food != null && food.getItem() != null) {
-            if (food.getItem() instanceof IEdible) return ((IEdible) food.getItem()).getFoodValues(food);
-            else if (food.getItem() instanceof ItemFood) return getItemFoodValues((ItemFood) food.getItem(), food);
-
+            if (food.getItem() instanceof IEdible) {
+                return ((IEdible) food.getItem()).getFoodValues(food);
+            } else if (food.getItem() instanceof ItemFood) {
+                return getItemFoodValues((ItemFood) food.getItem(), food);
+            }
             Block block = AppleCoreAPI.registry.getEdibleBlockFromItem(food.getItem());
-            if (block != null && block instanceof IEdible) return ((IEdible) block).getFoodValues(food);
+            if (block instanceof IEdible) {
+                return ((IEdible) block).getFoodValues(food);
+            }
         }
         return null;
     }
@@ -84,17 +87,6 @@ public enum AppleCoreAccessorMutatorImpl implements IAppleCoreAccessor, IAppleCo
     }
 
     @Override
-    public float getExhaustion(EntityPlayer player) {
-        try {
-            return foodExhaustion.getFloat(player.getFoodStats());
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            return 0f;
-        }
-    }
-
-    @Override
     public float getMaxExhaustion(EntityPlayer player) {
         ExhaustionEvent.GetMaxExhaustion event = new ExhaustionEvent.GetMaxExhaustion(player);
         MinecraftForge.EVENT_BUS.post(event);
@@ -115,78 +107,36 @@ public enum AppleCoreAccessorMutatorImpl implements IAppleCoreAccessor, IAppleCo
         return event.starveTickPeriod;
     }
 
+    @Override
+    public float getExhaustion(EntityPlayer player) {
+        return ((FoodStatsAccessor) player.getFoodStats()).getFoodExhaustionLevel();
+    }
+
     /*
      * IAppleCoreMutator implementation
      */
     @Override
     public void setExhaustion(EntityPlayer player, float exhaustion) {
-        try {
-            foodExhaustion.setFloat(player.getFoodStats(), exhaustion);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ((FoodStatsAccessor) player.getFoodStats()).setFoodExhaustionLevel(exhaustion);
     }
 
     @Override
     public void setHunger(EntityPlayer player, int hunger) {
-        try {
-            foodLevel.setInt(player.getFoodStats(), hunger);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ((FoodStatsAccessor) player.getFoodStats()).setFoodlevel(hunger);
     }
 
     @Override
     public void setSaturation(EntityPlayer player, float saturation) {
-        try {
-            foodSaturationLevel.setFloat(player.getFoodStats(), saturation);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ((FoodStatsAccessor) player.getFoodStats()).setFoodSaturationLevel(saturation);
     }
 
     @Override
     public void setHealthRegenTickCounter(EntityPlayer player, int tickCounter) {
-        try {
-            foodTimer.setInt(player.getFoodStats(), tickCounter);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        ((FoodStatsAccessor) player.getFoodStats()).setFoodTimer(tickCounter);
     }
 
     @Override
     public void setStarveDamageTickCounter(EntityPlayer player, int tickCounter) {
-        try {
-            starveTimer.setInt(player.getFoodStats(), tickCounter);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // reflection
-    static final Field foodLevel = ReflectionHelper.findField(FoodStats.class, "foodLevel", "field_75127_a", "a");
-    static final Field foodSaturationLevel =
-            ReflectionHelper.findField(FoodStats.class, "foodSaturationLevel", "field_75125_b", "b");
-    static final Field foodExhaustion =
-            ReflectionHelper.findField(FoodStats.class, "foodExhaustionLevel", "field_75126_c", "c");
-    static final Field foodTimer = ReflectionHelper.findField(FoodStats.class, "foodTimer", "field_75123_d", "d");
-    static final Field starveTimer = ReflectionHelper.findField(FoodStats.class, "starveTimer");
-
-    static {
-        foodLevel.setAccessible(true);
-        foodSaturationLevel.setAccessible(true);
-        foodExhaustion.setAccessible(true);
-        foodTimer.setAccessible(true);
-        starveTimer.setAccessible(true);
+        ((FoodStatsExt) player.getFoodStats()).setStarveTimer(tickCounter);
     }
 }

@@ -20,15 +20,20 @@ import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.hunger.ExhaustionEvent;
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
-import squeek.applecore.mixinplugin.IAppleCorePlayerStats;
+import squeek.applecore.mixinplugin.ducks.FoodStatsExt;
 
 @Mixin(FoodStats.class)
-public abstract class FoodStatsMixin implements IAppleCorePlayerStats {
+public abstract class FoodStatsMixin implements FoodStatsExt {
 
     @Unique
     private EntityPlayer entityPlayer;
 
     private int starveTimer;
+
+    @Override
+    public void setStarveTimer(int starveTimer) {
+        this.starveTimer = starveTimer;
+    }
 
     @Shadow
     private int foodLevel;

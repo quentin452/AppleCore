@@ -60,6 +60,10 @@ public enum Mixins {
             .addMixinClasses("minecraft.FoodStatsMixin")
             .addTargetedMod(VANILLA)
             .setPhase(Phase.EARLY)),
+    FoodStatsMixinAccessor(new Builder()
+            .addMixinClasses("minecraft.accessors.FoodStatsAccessor")
+            .addTargetedMod(VANILLA)
+            .setPhase(Phase.EARLY)),
     GuiScreenMixin(new Builder()
             .addMixinClasses("minecraft.GuiScreenMixin")
             .setSide(Side.CLIENT)
