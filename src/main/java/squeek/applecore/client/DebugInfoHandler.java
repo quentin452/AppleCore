@@ -1,18 +1,21 @@
 package squeek.applecore.client;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.text.DecimalFormat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.ModConfig;
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class DebugInfoHandler {
+
     private static final DecimalFormat saturationDF = new DecimalFormat("#.##");
     private static final DecimalFormat exhaustionValDF = new DecimalFormat("0.00");
     private static final DecimalFormat exhaustionMaxDF = new DecimalFormat("#.##");
@@ -32,9 +35,14 @@ public class DebugInfoHandler {
             FoodStats stats = mc.thePlayer.getFoodStats();
             float curExhaustion = AppleCoreAPI.accessor.getExhaustion(mc.thePlayer);
             float maxExhaustion = AppleCoreAPI.accessor.getMaxExhaustion(mc.thePlayer);
-            textEvent.left.add("hunger: " + stats.getFoodLevel() + ", sat: "
-                    + saturationDF.format(stats.getSaturationLevel()) + ", exh: "
-                    + exhaustionValDF.format(curExhaustion) + "/" + exhaustionMaxDF.format(maxExhaustion));
+            textEvent.left.add(
+                    "hunger: " + stats.getFoodLevel()
+                            + ", sat: "
+                            + saturationDF.format(stats.getSaturationLevel())
+                            + ", exh: "
+                            + exhaustionValDF.format(curExhaustion)
+                            + "/"
+                            + exhaustionMaxDF.format(maxExhaustion));
         }
     }
 }

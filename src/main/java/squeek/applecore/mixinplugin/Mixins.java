@@ -2,11 +2,12 @@ package squeek.applecore.mixinplugin;
 
 import static squeek.applecore.mixinplugin.TargetedMod.*;
 
-import cpw.mods.fml.relauncher.FMLLaunchHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import cpw.mods.fml.relauncher.FMLLaunchHandler;
 
 public enum Mixins {
 
@@ -16,79 +17,44 @@ public enum Mixins {
     // classes!
     // Exception: Tags.java, as long as it is used for Strings only!
     //
-    BlockCactusMixin(new Builder()
-            .addMixinClasses("minecraft.BlockCactusMixin")
-            .addTargetedMod(VANILLA)
+    BlockCactusMixin(
+            new Builder().addMixinClasses("minecraft.BlockCactusMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockCakeMixin(
+            new Builder().addMixinClasses("minecraft.BlockCakeMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockCocoaMixin(
+            new Builder().addMixinClasses("minecraft.BlockCocoaMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockCropsMixin(
+            new Builder().addMixinClasses("minecraft.BlockCropsMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockMushroomMixin(new Builder().addMixinClasses("minecraft.BlockMushroomMixin").addTargetedMod(VANILLA)
             .setPhase(Phase.EARLY)),
-    BlockCakeMixin(new Builder()
-            .addMixinClasses("minecraft.BlockCakeMixin")
-            .addTargetedMod(VANILLA)
+    BlockNetherWartMixin(new Builder().addMixinClasses("minecraft.BlockNetherWartMixin").addTargetedMod(VANILLA)
             .setPhase(Phase.EARLY)),
-    BlockCocoaMixin(new Builder()
-            .addMixinClasses("minecraft.BlockCocoaMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockCropsMixin(new Builder()
-            .addMixinClasses("minecraft.BlockCropsMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockMushroomMixin(new Builder()
-            .addMixinClasses("minecraft.BlockMushroomMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockNetherWartMixin(new Builder()
-            .addMixinClasses("minecraft.BlockNetherWartMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockReedMixin(new Builder()
-            .addMixinClasses("minecraft.BlockReedMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockSaplingMixin(new Builder()
-            .addMixinClasses("minecraft.BlockSaplingMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    BlockStemMixin(new Builder()
-            .addMixinClasses("minecraft.BlockStemMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    EntityPlayerMixin(new Builder()
-            .addMixinClasses("minecraft.EntityPlayerMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    FoodStatsMixin(new Builder()
-            .addMixinClasses("minecraft.FoodStatsMixin")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    FoodStatsMixinAccessor(new Builder()
-            .addMixinClasses("minecraft.accessors.FoodStatsAccessor")
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    GuiScreenMixin(new Builder()
-            .addMixinClasses("minecraft.GuiScreenMixin")
-            .setSide(Side.CLIENT)
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
-    ItemRendererMixin(new Builder()
-            .addMixinClasses("minecraft.ItemRendererMixin")
-            .setSide(Side.CLIENT)
-            .addTargetedMod(VANILLA)
-            .setPhase(Phase.EARLY)),
+    BlockReedMixin(
+            new Builder().addMixinClasses("minecraft.BlockReedMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockSaplingMixin(
+            new Builder().addMixinClasses("minecraft.BlockSaplingMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    BlockStemMixin(
+            new Builder().addMixinClasses("minecraft.BlockStemMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    EntityPlayerMixin(
+            new Builder().addMixinClasses("minecraft.EntityPlayerMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    FoodStatsMixin(
+            new Builder().addMixinClasses("minecraft.FoodStatsMixin").addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    FoodStatsMixinAccessor(new Builder().addMixinClasses("minecraft.accessors.FoodStatsAccessor")
+            .addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    GuiScreenMixin(new Builder().addMixinClasses("minecraft.GuiScreenMixin").setSide(Side.CLIENT)
+            .addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
+    ItemRendererMixin(new Builder().addMixinClasses("minecraft.ItemRendererMixin").setSide(Side.CLIENT)
+            .addTargetedMod(VANILLA).setPhase(Phase.EARLY)),
 
-    GuiDrawMixin(new Builder()
-            .addMixinClasses("codechickenlib.GuiDrawMixin")
-            .setSide(Side.CLIENT)
-            .addTargetedMod(CODECHICKEN_LIB)
-            .setPhase(Phase.EARLY)),
+    GuiDrawMixin(new Builder().addMixinClasses("codechickenlib.GuiDrawMixin").setSide(Side.CLIENT)
+            .addTargetedMod(CODECHICKEN_LIB).setPhase(Phase.EARLY)),
 
-    BlockPamFruitMixin(
-            new Builder().addMixinClasses("harvestcraft.BlockPamFruitMixin").addTargetedMod(HARVESTCRAFT)),
+    BlockPamFruitMixin(new Builder().addMixinClasses("harvestcraft.BlockPamFruitMixin").addTargetedMod(HARVESTCRAFT)),
     BlockPamSaplingMixin(
             new Builder().addMixinClasses("harvestcraft.BlockPamSaplingMixin").addTargetedMod(HARVESTCRAFT)),
 
     BerryBushMixin(new Builder().addMixinClasses("natura.BerryBushMixin").addTargetedMod(NATURA)),
-    NetherBerryBushMixin(
-            new Builder().addMixinClasses("natura.NetherBerryBushMixin").addTargetedMod(NATURA));
+    NetherBerryBushMixin(new Builder().addMixinClasses("natura.NetherBerryBushMixin").addTargetedMod(NATURA));
 
     public final List<String> mixinClasses;
     public final Phase phase;
@@ -97,6 +63,7 @@ public enum Mixins {
     public final List<TargetedMod> excludedMods;
 
     private static class Builder {
+
         private final List<String> mixinClasses = new ArrayList<>();
         private Side side = Side.BOTH;
         private Phase phase = Phase.LATE;
@@ -143,8 +110,7 @@ public enum Mixins {
     }
 
     private boolean shouldLoadSide() {
-        return (side == Side.BOTH
-                || (side == Side.SERVER && FMLLaunchHandler.side().isServer())
+        return (side == Side.BOTH || (side == Side.SERVER && FMLLaunchHandler.side().isServer())
                 || (side == Side.CLIENT && FMLLaunchHandler.side().isClient()));
     }
 
@@ -155,9 +121,9 @@ public enum Mixins {
             if (target == TargetedMod.VANILLA) continue;
 
             // Check coremod first
-            if (!loadedCoreMods.isEmpty()
-                    && target.coreModClass != null
-                    && !loadedCoreMods.contains(target.coreModClass)) return false;
+            if (!loadedCoreMods.isEmpty() && target.coreModClass != null
+                    && !loadedCoreMods.contains(target.coreModClass))
+                return false;
             else if (!loadedMods.isEmpty() && target.modId != null && !loadedMods.contains(target.modId)) return false;
         }
 
@@ -171,9 +137,9 @@ public enum Mixins {
             if (target == TargetedMod.VANILLA) continue;
 
             // Check coremod first
-            if (!loadedCoreMods.isEmpty()
-                    && target.coreModClass != null
-                    && loadedCoreMods.contains(target.coreModClass)) return false;
+            if (!loadedCoreMods.isEmpty() && target.coreModClass != null
+                    && loadedCoreMods.contains(target.coreModClass))
+                return false;
             else if (!loadedMods.isEmpty() && target.modId != null && loadedMods.contains(target.modId)) return false;
         }
 
@@ -181,8 +147,7 @@ public enum Mixins {
     }
 
     public boolean shouldLoad(Set<String> loadedCoreMods, Set<String> loadedMods) {
-        return (shouldLoadSide()
-                && allModsLoaded(targetedMods, loadedCoreMods, loadedMods)
+        return (shouldLoadSide() && allModsLoaded(targetedMods, loadedCoreMods, loadedMods)
                 && noModsLoaded(excludedMods, loadedCoreMods, loadedMods));
     }
 

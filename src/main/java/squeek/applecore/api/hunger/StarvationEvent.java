@@ -3,13 +3,14 @@ package squeek.applecore.api.hunger;
 import static cpw.mods.fml.common.eventhandler.Event.HasResult;
 import static cpw.mods.fml.common.eventhandler.Event.Result;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * Base class for all StarvationEvent events.<br>
@@ -17,6 +18,7 @@ import squeek.applecore.api.AppleCoreAPI;
  * All children of this event are fired on the {@link MinecraftForge#EVENT_BUS}.
  */
 public abstract class StarvationEvent extends Event {
+
     public final EntityPlayer player;
 
     public StarvationEvent(EntityPlayer player) {
@@ -31,12 +33,12 @@ public abstract class StarvationEvent extends Event {
      * This event is not {@link Cancelable}.<br>
      * <br>
      * This event uses the {@link Result}. {@link HasResult}<br>
-     * {@link Result#DEFAULT} will use the vanilla conditionals.
-     * {@link Result#ALLOW} will allow starvation without condition.
-     * {@link Result#DENY} will deny starvation without condition.
+     * {@link Result#DEFAULT} will use the vanilla conditionals. {@link Result#ALLOW} will allow starvation without
+     * condition. {@link Result#DENY} will deny starvation without condition.
      */
     @HasResult
     public static class AllowStarvation extends StarvationEvent {
+
         public AllowStarvation(EntityPlayer player) {
             super(player);
         }
@@ -54,6 +56,7 @@ public abstract class StarvationEvent extends Event {
      * This event does not have a {@link Result}. {@link HasResult}<br>
      */
     public static class GetStarveTickPeriod extends StarvationEvent {
+
         public int starveTickPeriod = 80;
 
         public GetStarveTickPeriod(EntityPlayer player) {
@@ -62,8 +65,8 @@ public abstract class StarvationEvent extends Event {
     }
 
     /**
-     * Fired once the time since last starvation damage reaches starveTickPeriod (see {@link GetStarveTickPeriod}),
-     * in order to control how much starvation damage to do.
+     * Fired once the time since last starvation damage reaches starveTickPeriod (see {@link GetStarveTickPeriod}), in
+     * order to control how much starvation damage to do.
      *
      * This event is fired in {@link FoodStats#onUpdate}.<br>
      * <br>
@@ -76,14 +79,14 @@ public abstract class StarvationEvent extends Event {
      */
     @Cancelable
     public static class Starve extends StarvationEvent {
+
         public float starveDamage = 1f;
 
         public Starve(EntityPlayer player) {
             super(player);
 
             EnumDifficulty difficulty = player.worldObj.difficultySetting;
-            boolean shouldDoDamage = player.getHealth() > 10.0F
-                    || difficulty == EnumDifficulty.HARD
+            boolean shouldDoDamage = player.getHealth() > 10.0F || difficulty == EnumDifficulty.HARD
                     || player.getHealth() > 1.0F && difficulty == EnumDifficulty.NORMAL;
 
             if (!shouldDoDamage) starveDamage = 0f;

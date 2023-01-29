@@ -2,6 +2,7 @@ package squeek.applecore.api.food;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.IAppleCoreAccessor;
 
@@ -11,12 +12,15 @@ import squeek.applecore.api.IAppleCoreAccessor;
  * To get food values for any given food, use any of the static {@link #get} methods.
  *
  * <pre>
- * {@code
- * FoodValues appleFoodValues = FoodValues.get(new ItemStack(Items.apple));
+ * 
+ * {
+ *     &#64;code
+ *     FoodValues appleFoodValues = FoodValues.get(new ItemStack(Items.apple));
  * }
  * </pre>
  */
 public class FoodValues {
+
     public final int hunger;
     public final float saturationModifier;
 

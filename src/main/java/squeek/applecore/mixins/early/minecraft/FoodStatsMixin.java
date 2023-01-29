@@ -1,12 +1,12 @@
 package squeek.applecore.mixins.early.minecraft;
 
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodEvent;
 import squeek.applecore.api.food.FoodValues;
@@ -21,6 +22,7 @@ import squeek.applecore.api.hunger.ExhaustionEvent;
 import squeek.applecore.api.hunger.HealthRegenEvent;
 import squeek.applecore.api.hunger.StarvationEvent;
 import squeek.applecore.mixinplugin.ducks.FoodStatsExt;
+import cpw.mods.fml.common.eventhandler.Event;
 
 @Mixin(FoodStats.class)
 public abstract class FoodStatsMixin implements FoodStatsExt {
@@ -63,8 +65,9 @@ public abstract class FoodStatsMixin implements FoodStatsExt {
 
     @Inject(method = "addStats", at = @At("HEAD"), cancellable = true)
     private void onAddStats(int hunger, float saturationModifier, CallbackInfo callbackInfo) {
-        FoodEvent.FoodStatsAddition event =
-                new FoodEvent.FoodStatsAddition(entityPlayer, new FoodValues(hunger, saturationModifier));
+        FoodEvent.FoodStatsAddition event = new FoodEvent.FoodStatsAddition(
+                entityPlayer,
+                new FoodValues(hunger, saturationModifier));
         MinecraftForge.EVENT_BUS.post(event);
         if (event.isCancelable() && event.isCanceled()) {
             callbackInfo.cancel();
@@ -83,17 +86,19 @@ public abstract class FoodStatsMixin implements FoodStatsExt {
 
         addStats(modifiedFoodValues.hunger, modifiedFoodValues.saturationModifier);
 
-        MinecraftForge.EVENT_BUS.post(new FoodEvent.FoodEaten(
-                entityPlayer,
-                itemStack,
-                modifiedFoodValues,
-                foodLevel - prevFoodLevel,
-                foodSaturationLevel - prevSaturationLevel));
+        MinecraftForge.EVENT_BUS.post(
+                new FoodEvent.FoodEaten(
+                        entityPlayer,
+                        itemStack,
+                        modifiedFoodValues,
+                        foodLevel - prevFoodLevel,
+                        foodSaturationLevel - prevSaturationLevel));
     }
 
     /**
      * @author squeek
-     * @reason Overwrite how exhaustion, starvation, and health regeneration work and fire events for each for other mods to act upon.
+     * @reason Overwrite how exhaustion, starvation, and health regeneration work and fire events for each for other
+     *         mods to act upon.
      */
     @Overwrite
     public void onUpdate(EntityPlayer player) {
@@ -105,8 +110,10 @@ public abstract class FoodStatsMixin implements FoodStatsExt {
         float maxExhaustion = AppleCoreAPI.accessor.getMaxExhaustion(player);
         if (allowExhaustionResult == Event.Result.ALLOW
                 || (allowExhaustionResult == Event.Result.DEFAULT && foodExhaustionLevel >= maxExhaustion)) {
-            ExhaustionEvent.Exhausted exhaustedEvent =
-                    new ExhaustionEvent.Exhausted(player, maxExhaustion, foodExhaustionLevel);
+            ExhaustionEvent.Exhausted exhaustedEvent = new ExhaustionEvent.Exhausted(
+                    player,
+                    maxExhaustion,
+                    foodExhaustionLevel);
             MinecraftForge.EVENT_BUS.post(exhaustedEvent);
 
             this.foodExhaustionLevel += exhaustedEvent.deltaExhaustion;
@@ -118,11 +125,10 @@ public abstract class FoodStatsMixin implements FoodStatsExt {
 
         HealthRegenEvent.AllowRegen allowRegenEvent = new HealthRegenEvent.AllowRegen(player);
         MinecraftForge.EVENT_BUS.post(allowRegenEvent);
-        if (allowRegenEvent.getResult() == Event.Result.ALLOW
-                || (allowRegenEvent.getResult() == Event.Result.DEFAULT
-                        && player.worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration")
-                        && this.foodLevel >= 18
-                        && player.shouldHeal())) {
+        if (allowRegenEvent.getResult() == Event.Result.ALLOW || (allowRegenEvent.getResult() == Event.Result.DEFAULT
+                && player.worldObj.getGameRules().getGameRuleBooleanValue("naturalRegeneration")
+                && this.foodLevel >= 18
+                && player.shouldHeal())) {
             ++this.foodTimer;
 
             if (this.foodTimer >= AppleCoreAPI.accessor.getHealthRegenTickPeriod(player)) {

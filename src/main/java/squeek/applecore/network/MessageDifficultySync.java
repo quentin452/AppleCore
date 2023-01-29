@@ -1,12 +1,14 @@
 package squeek.applecore.network;
 
+import net.minecraft.world.EnumDifficulty;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.world.EnumDifficulty;
 
 public class MessageDifficultySync implements IMessage, IMessageHandler<MessageDifficultySync, IMessage> {
+
     EnumDifficulty difficulty;
 
     public MessageDifficultySync() {}

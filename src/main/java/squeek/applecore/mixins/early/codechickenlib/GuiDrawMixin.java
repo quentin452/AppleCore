@@ -1,11 +1,12 @@
 package squeek.applecore.mixins.early.codechickenlib;
 
-import codechicken.lib.gui.GuiDraw;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import squeek.applecore.client.TooltipOverlayHandler;
+import codechicken.lib.gui.GuiDraw;
 
 @Mixin(GuiDraw.class)
 public class GuiDrawMixin {

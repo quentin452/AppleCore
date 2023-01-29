@@ -1,12 +1,13 @@
 package squeek.applecore.network;
 
+import squeek.applecore.api.AppleCoreAPI;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import squeek.applecore.api.AppleCoreAPI;
 
 public class MessageExhaustionSync implements IMessage, IMessageHandler<MessageExhaustionSync, IMessage> {
+
     float exhaustionLevel;
 
     public MessageExhaustionSync() {}

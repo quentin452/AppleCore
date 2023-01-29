@@ -5,12 +5,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.World;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdibleBlock;
@@ -31,8 +33,8 @@ public class BlockCakeMixin implements IEdibleBlock {
     @Inject(
             method = "func_150036_b",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/util/FoodStats;addStats(IF)V", shift = At.Shift.BEFORE))
-    private void onAddStats(
-            World world, int blockX, int blockY, int blockZ, EntityPlayer entityPlayer, CallbackInfo callbackInfo) {
+    private void onAddStats(World world, int blockX, int blockY, int blockZ, EntityPlayer entityPlayer,
+            CallbackInfo callbackInfo) {
         this.world = world;
         this.entityPlayer = entityPlayer;
     }

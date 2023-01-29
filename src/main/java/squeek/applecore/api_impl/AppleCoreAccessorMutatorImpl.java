@@ -6,6 +6,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.IAppleCoreAccessor;
 import squeek.applecore.api.IAppleCoreMutator;
@@ -19,6 +20,7 @@ import squeek.applecore.mixinplugin.ducks.FoodStatsExt;
 import squeek.applecore.mixins.early.minecraft.accessors.FoodStatsAccessor;
 
 public enum AppleCoreAccessorMutatorImpl implements IAppleCoreAccessor, IAppleCoreMutator {
+
     INSTANCE;
 
     AppleCoreAccessorMutatorImpl() {

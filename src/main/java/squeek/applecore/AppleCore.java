@@ -1,6 +1,26 @@
 package squeek.applecore;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import squeek.applecore.api_impl.AppleCoreAccessorMutatorImpl;
+import squeek.applecore.api_impl.AppleCoreDispatcherImpl;
+import squeek.applecore.api_impl.AppleCoreRegistryImpl;
+import squeek.applecore.client.DebugInfoHandler;
+import squeek.applecore.client.HUDOverlayHandler;
+import squeek.applecore.client.TooltipOverlayHandler;
+import squeek.applecore.commands.Commands;
+import squeek.applecore.mixinplugin.Mixins;
+import squeek.applecore.network.SyncHandler;
+
 import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
+
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -11,22 +31,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.Side;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import squeek.applecore.api_impl.AppleCoreAccessorMutatorImpl;
-import squeek.applecore.api_impl.AppleCoreDispatcherImpl;
-import squeek.applecore.api_impl.AppleCoreRegistryImpl;
-import squeek.applecore.client.DebugInfoHandler;
-import squeek.applecore.client.HUDOverlayHandler;
-import squeek.applecore.client.TooltipOverlayHandler;
-import squeek.applecore.commands.Commands;
-import squeek.applecore.mixinplugin.Mixins;
-import squeek.applecore.network.SyncHandler;
 
 @IFMLLoadingPlugin.SortingIndex(1100)
 @IFMLLoadingPlugin.MCVersion("1.7.10")
@@ -38,6 +42,7 @@ import squeek.applecore.network.SyncHandler;
         guiFactory = ModInfo.GUI_FACTORY_CLASS,
         acceptedMinecraftVersions = "[1.7.10]")
 public class AppleCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
+
     public static Logger Log = LogManager.getLogger(ModInfo.MODID);
 
     @EventHandler
@@ -82,8 +87,7 @@ public class AppleCore implements IFMLLoadingPlugin, IEarlyMixinLoader {
         try {
             Class.forName("codechicken.lib.asm.ModularASMTransformer");
             loadedCoreMods.add("codechicken.lib");
-        } catch (ClassNotFoundException ignored) {
-        }
+        } catch (ClassNotFoundException ignored) {}
 
         final List<String> mixins = new ArrayList<>();
         final List<String> notLoading = new ArrayList<>();

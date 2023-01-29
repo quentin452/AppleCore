@@ -5,16 +5,16 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 
 /**
- * Useful for adding AppleCore compatibility to edible item
- * implementations that do not extend ItemFood for whatever reason.<br>
+ * Useful for adding AppleCore compatibility to edible item implementations that do not extend ItemFood for whatever
+ * reason.<br>
  * <br>
- * To use it, simply have your item implement {@link IEdible}, and then
- * instead of calling {@code player.getFoodStats().addStats(int, float)}
- * in your item's {@code onEaten} method, you'd instead call:<br>
+ * To use it, simply have your item implement {@link IEdible}, and then instead of calling
+ * {@code player.getFoodStats().addStats(int, float)} in your item's {@code onEaten} method, you'd instead call:<br>
  * <br>
  * {@code new ItemFoodProxy(this).onEaten(itemStack, player);}
  */
 public class ItemFoodProxy extends ItemFood {
+
     public IEdible proxyEdible;
 
     public ItemFoodProxy(IEdible proxyEdible) {

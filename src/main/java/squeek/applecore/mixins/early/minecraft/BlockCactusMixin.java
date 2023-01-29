@@ -1,14 +1,17 @@
 package squeek.applecore.mixins.early.minecraft;
 
-import cpw.mods.fml.common.eventhandler.Event;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.world.World;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.Event;
 
 @Mixin(BlockCactus.class)
 public abstract class BlockCactusMixin extends Block {
@@ -18,8 +21,8 @@ public abstract class BlockCactusMixin extends Block {
     }
 
     @Shadow
-    public abstract void onNeighborBlockChange(
-            World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_, Block p_149695_5_);
+    public abstract void onNeighborBlockChange(World p_149695_1_, int p_149695_2_, int p_149695_3_, int p_149695_4_,
+            Block p_149695_5_);
 
     /**
      * @author squeek
@@ -34,9 +37,8 @@ public abstract class BlockCactusMixin extends Block {
                 ;
             }
 
-            if (l < 3
-                    && AppleCoreAPI.dispatcher.validatePlantGrowth(this, world, blockX, blockY, blockZ, random)
-                            != Event.Result.DENY) {
+            if (l < 3 && AppleCoreAPI.dispatcher.validatePlantGrowth(this, world, blockX, blockY, blockZ, random)
+                    != Event.Result.DENY) {
                 int metadata = world.getBlockMetadata(blockX, blockY, blockZ);
 
                 if (metadata == 15) {

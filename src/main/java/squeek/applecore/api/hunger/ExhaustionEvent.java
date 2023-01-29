@@ -3,13 +3,14 @@ package squeek.applecore.api.hunger;
 import static cpw.mods.fml.common.eventhandler.Event.HasResult;
 import static cpw.mods.fml.common.eventhandler.Event.Result;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * Base class for all ExhaustionEvent events.<br>
@@ -17,6 +18,7 @@ import squeek.applecore.api.AppleCoreAPI;
  * All children of this event are fired on the {@link MinecraftForge#EVENT_BUS}.
  */
 public abstract class ExhaustionEvent extends Event {
+
     public final EntityPlayer player;
 
     public ExhaustionEvent(EntityPlayer player) {
@@ -37,6 +39,7 @@ public abstract class ExhaustionEvent extends Event {
      */
     @HasResult
     public static class AllowExhaustion extends ExhaustionEvent {
+
         public AllowExhaustion(EntityPlayer player) {
             super(player);
         }
@@ -54,6 +57,7 @@ public abstract class ExhaustionEvent extends Event {
      * This event does not have a result. {@link HasResult}<br>
      */
     public static class GetMaxExhaustion extends ExhaustionEvent {
+
         public float maxExhaustionLevel = 4f;
 
         public GetMaxExhaustion(EntityPlayer player) {
@@ -62,18 +66,19 @@ public abstract class ExhaustionEvent extends Event {
     }
 
     /**
-     * Fired once exchaustionLevel exceeds maxExhaustionLevel (see {@link GetMaxExhaustion}),
-     * in order to control how exhaustion affects hunger/saturation.
+     * Fired once exchaustionLevel exceeds maxExhaustionLevel (see {@link GetMaxExhaustion}), in order to control how
+     * exhaustion affects hunger/saturation.
      *
      * This event is fired in {@link FoodStats#onUpdate}.<br>
      * <br>
      * {@link #currentExhaustionLevel} contains the exhaustion level of the {@link #player}.<br>
-     * {@link #deltaExhaustion} contains the delta to be applied to exhaustion level (default: {@link GetMaxExhaustion#maxExhaustionLevel}).<br>
+     * {@link #deltaExhaustion} contains the delta to be applied to exhaustion level (default:
+     * {@link GetMaxExhaustion#maxExhaustionLevel}).<br>
      * {@link #deltaHunger} contains the delta to be applied to hunger.<br>
      * {@link #deltaSaturation} contains the delta to be applied to saturation.<br>
      * <br>
-     * Note: {@link #deltaHunger} and {@link #deltaSaturation} will vary depending on their vanilla conditionals.
-     * For example, deltaHunger will be 0 when this event is fired in Peaceful difficulty.<br>
+     * Note: {@link #deltaHunger} and {@link #deltaSaturation} will vary depending on their vanilla conditionals. For
+     * example, deltaHunger will be 0 when this event is fired in Peaceful difficulty.<br>
      * <br>
      * This event is {@link Cancelable}.<br>
      * If this event is canceled, it will skip applying the delta values to hunger and saturation.<br>
@@ -82,6 +87,7 @@ public abstract class ExhaustionEvent extends Event {
      */
     @Cancelable
     public static class Exhausted extends ExhaustionEvent {
+
         public final float currentExhaustionLevel;
         public float deltaExhaustion;
         public int deltaHunger = -1;

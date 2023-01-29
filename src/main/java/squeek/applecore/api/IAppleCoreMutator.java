@@ -3,6 +3,7 @@ package squeek.applecore.api;
 import net.minecraft.entity.player.EntityPlayer;
 
 public interface IAppleCoreMutator {
+
     /**
      * Sets the exhaustion level of the {@code player}.
      */
@@ -21,16 +22,16 @@ public interface IAppleCoreMutator {
     /**
      * Sets the health regen tick counter of the {@code player}.
      *
-     * See {@link squeek.applecore.api.hunger.HealthRegenEvent.GetRegenTickPeriod}
-     * and {@link squeek.applecore.api.hunger.HealthRegenEvent.Regen}
+     * See {@link squeek.applecore.api.hunger.HealthRegenEvent.GetRegenTickPeriod} and
+     * {@link squeek.applecore.api.hunger.HealthRegenEvent.Regen}
      */
     public void setHealthRegenTickCounter(EntityPlayer player, int tickCounter);
 
     /**
      * Sets the starvation tick counter of the {@code player}.
      *
-     * See {@link squeek.applecore.api.hunger.StarvationEvent.GetStarveTickPeriod}
-     * and {@link squeek.applecore.api.hunger.StarvationEvent.Starve}
+     * See {@link squeek.applecore.api.hunger.StarvationEvent.GetStarveTickPeriod} and
+     * {@link squeek.applecore.api.hunger.StarvationEvent.Starve}
      */
     public void setStarveDamageTickCounter(EntityPlayer player, int tickCounter);
 }

@@ -2,14 +2,15 @@ package squeek.applecore.api.food;
 
 import static cpw.mods.fml.common.eventhandler.Event.HasResult;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * Base class for all FoodEvent events.<br>
@@ -17,13 +18,15 @@ import squeek.applecore.api.AppleCoreAPI;
  * All children of this event are fired on the {@link MinecraftForge#EVENT_BUS}.
  */
 public abstract class FoodEvent extends Event {
+
     /**
      * Fired every time food values are retrieved to allow player-independent control over their values.
      *
      * This event is fired in {@link FoodStats#func_151686_a(ItemFood, ItemStack)} and in {@link AppleCoreAPI}.<br>
      * <br>
      * {@link #foodValues} contains the values of the {@link #food}.<br>
-     * {@link #unmodifiedFoodValues} contains the food values of the {@link #food} before the GetFoodValues event was fired.<br>
+     * {@link #unmodifiedFoodValues} contains the food values of the {@link #food} before the GetFoodValues event was
+     * fired.<br>
      * {@link #food} contains the food in question.<br>
      * <br>
      * This event is not {@link Cancelable}.<br>
@@ -31,6 +34,7 @@ public abstract class FoodEvent extends Event {
      * This event does not have a result. {@link HasResult}<br>
      */
     public static class GetFoodValues extends FoodEvent {
+
         public FoodValues foodValues;
         public final FoodValues unmodifiedFoodValues;
         public final ItemStack food;
@@ -43,14 +47,15 @@ public abstract class FoodEvent extends Event {
     }
 
     /**
-     * Fired every time food values are retrieved to allow player-dependent control over their values.
-     * This event will always be preceded by {@link GetFoodValues} being fired.
+     * Fired every time food values are retrieved to allow player-dependent control over their values. This event will
+     * always be preceded by {@link GetFoodValues} being fired.
      *
      * This event is fired in {@link FoodStats#func_151686_a(ItemFood, ItemStack)} and in {@link AppleCoreAPI}.<br>
      * <br>
      * {@link #player} contains the player.<br>
      * {@link #foodValues} contains the values of the {@link #food}.<br>
-     * {@link #unmodifiedFoodValues} contains the food values of the {@link #food} before the GetFoodValues event was fired.<br>
+     * {@link #unmodifiedFoodValues} contains the food values of the {@link #food} before the GetFoodValues event was
+     * fired.<br>
      * {@link #food} contains the food in question.<br>
      * <br>
      * This event is not {@link Cancelable}.<br>
@@ -58,6 +63,7 @@ public abstract class FoodEvent extends Event {
      * This event does not have a result. {@link HasResult}<br>
      */
     public static class GetPlayerFoodValues extends FoodEvent {
+
         public FoodValues foodValues;
         public final FoodValues unmodifiedFoodValues;
         public final ItemStack food;
@@ -81,17 +87,14 @@ public abstract class FoodEvent extends Event {
      * This event does not have a result. {@link HasResult}<br>
      */
     public static class FoodEaten extends FoodEvent {
+
         public final FoodValues foodValues;
         public final int hungerAdded;
         public final float saturationAdded;
         public final ItemStack food;
         public final EntityPlayer player;
 
-        public FoodEaten(
-                EntityPlayer player,
-                ItemStack itemStack,
-                FoodValues foodValues,
-                int hungerAdded,
+        public FoodEaten(EntityPlayer player, ItemStack itemStack, FoodValues foodValues, int hungerAdded,
                 float saturationAdded) {
             this.player = player;
             this.food = itemStack;
@@ -113,6 +116,7 @@ public abstract class FoodEvent extends Event {
      */
     @Cancelable
     public static class FoodStatsAddition extends FoodEvent {
+
         public final FoodValues foodValuesToBeAdded;
         public final EntityPlayer player;
 

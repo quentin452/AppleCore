@@ -1,16 +1,8 @@
 package squeek.applecore.client;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -20,14 +12,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
 import squeek.applecore.AppleCore;
 import squeek.applecore.ModConfig;
 import squeek.applecore.ModInfo;
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.helpers.KeyHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TooltipOverlayHandler {
@@ -39,8 +42,8 @@ public class TooltipOverlayHandler {
     // ObfuscationReflectionHelper.remapFieldNames(GuiContainer.class.getName(), "guiTop", "field_147009_r", "r"));
     public static final Field theSlot = ReflectionHelper.findField(
             GuiContainer.class,
-            ObfuscationReflectionHelper.remapFieldNames(
-                    GuiContainer.class.getName(), "theSlot", "field_147006_u", "u"));
+            ObfuscationReflectionHelper
+                    .remapFieldNames(GuiContainer.class.getName(), "theSlot", "field_147006_u", "u"));
     private static Method getStackMouseOver = null;
     private static Method isNEIHidden = null;
     private static Field itemPanel = null;
@@ -66,7 +69,8 @@ public class TooltipOverlayHandler {
         try {
             if (Loader.isModLoaded("SpiceOfLife")) {
                 foodJournalGui = ReflectionHelper.getClass(
-                        TooltipOverlayHandler.class.getClassLoader(), "squeek.spiceoflife.gui.GuiScreenFoodJournal");
+                        TooltipOverlayHandler.class.getClassLoader(),
+                        "squeek.spiceoflife.gui.GuiScreenFoodJournal");
                 foodJournalHoveredStack = ReflectionHelper.findField(foodJournalGui, "hoveredStack");
             }
         } catch (Exception e) {
@@ -112,8 +116,7 @@ public class TooltipOverlayHandler {
                     }
 
                     // try NEI
-                    if (hoveredStack == null
-                            && isNEIHidden != null
+                    if (hoveredStack == null && isNEIHidden != null
                             && !(boolean) isNEIHidden.invoke(null)
                             && getStackMouseOver != null) {
                         hoveredStack = (ItemStack) (getStackMouseOver.invoke(itemPanel.get(null), mouseX, mouseY));
@@ -130,21 +133,20 @@ public class TooltipOverlayHandler {
                 }
 
                 // if the hovered stack is a food and there is no item being dragged
-                if (player.inventory.getItemStack() == null
-                        && hoveredStack != null
+                if (player.inventory.getItemStack() == null && hoveredStack != null
                         && AppleCoreAPI.accessor.isFood(hoveredStack)) {
                     FoodValues defaultFoodValues = FoodValues.get(hoveredStack);
                     FoodValues modifiedFoodValues = FoodValues.get(hoveredStack, player);
 
-                    if (defaultFoodValues.equals(modifiedFoodValues)
-                            && defaultFoodValues.hunger == 0
+                    if (defaultFoodValues.equals(modifiedFoodValues) && defaultFoodValues.hunger == 0
                             && defaultFoodValues.saturationModifier == 0) {
                         return;
                     }
 
                     int biggestHunger = Math.max(defaultFoodValues.hunger, modifiedFoodValues.hunger);
                     float biggestSaturationIncrement = Math.max(
-                            defaultFoodValues.getSaturationIncrement(), modifiedFoodValues.getSaturationIncrement());
+                            defaultFoodValues.getSaturationIncrement(),
+                            modifiedFoodValues.getSaturationIncrement());
 
                     int barsNeeded = (int) Math.ceil(Math.abs(biggestHunger) / 2f);
                     int saturationBarsNeeded = (int) Math.max(1, Math.ceil(Math.abs(biggestSaturationIncrement) / 2f));
@@ -165,11 +167,9 @@ public class TooltipOverlayHandler {
                     boolean shouldDrawBelow = toolTipBottomY + 20 < scale.getScaledHeight() - 3;
 
                     int rightX = toolTipRightX - 3;
-                    int leftX = rightX
-                            - (Math.max(
-                                    barsNeeded * 9,
-                                    saturationBarsNeeded * 6
-                                            + (int) (mc.fontRenderer.getStringWidth(saturationText) * 0.75f)))
+                    int leftX = rightX - (Math.max(
+                            barsNeeded * 9,
+                            saturationBarsNeeded * 6 + (int) (mc.fontRenderer.getStringWidth(saturationText) * 0.75f)))
                             - 4;
                     int topY = (shouldDrawBelow ? toolTipBottomY : toolTipY - 20 + (needsCoordinateShift ? -4 : 0));
                     int bottomY = topY + 20;
@@ -203,17 +203,18 @@ public class TooltipOverlayHandler {
 
                         if (modifiedFoodValues.hunger < 0) {
                             curScreen.drawTexturedModalRect(x, y, 34, 27, 9, 9);
-                        } else if (modifiedFoodValues.hunger > defaultFoodValues.hunger
-                                && defaultFoodValues.hunger <= i) {
-                            curScreen.drawTexturedModalRect(x, y, 133, 27, 9, 9);
-                        } else if (modifiedFoodValues.hunger > i + 1
-                                || defaultFoodValues.hunger == modifiedFoodValues.hunger) {
-                            curScreen.drawTexturedModalRect(x, y, 16, 27, 9, 9);
-                        } else if (modifiedFoodValues.hunger == i + 1) {
-                            curScreen.drawTexturedModalRect(x, y, 124, 27, 9, 9);
-                        } else {
-                            curScreen.drawTexturedModalRect(x, y, 34, 27, 9, 9);
-                        }
+                        } else
+                            if (modifiedFoodValues.hunger > defaultFoodValues.hunger && defaultFoodValues.hunger <= i) {
+                                curScreen.drawTexturedModalRect(x, y, 133, 27, 9, 9);
+                            } else if (modifiedFoodValues.hunger > i + 1
+                                    || defaultFoodValues.hunger == modifiedFoodValues.hunger) {
+                                        curScreen.drawTexturedModalRect(x, y, 16, 27, 9, 9);
+                                    } else
+                                if (modifiedFoodValues.hunger == i + 1) {
+                                    curScreen.drawTexturedModalRect(x, y, 124, 27, 9, 9);
+                                } else {
+                                    curScreen.drawTexturedModalRect(x, y, 34, 27, 9, 9);
+                                }
 
                         GL11.glEnable(GL11.GL_BLEND);
                         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -222,7 +223,12 @@ public class TooltipOverlayHandler {
 
                         if (modifiedFoodValues.hunger > i) {
                             curScreen.drawTexturedModalRect(
-                                    x, y, modifiedFoodValues.hunger - 1 == i ? 61 : 52, 27, 9, 9);
+                                    x,
+                                    y,
+                                    modifiedFoodValues.hunger - 1 == i ? 61 : 52,
+                                    27,
+                                    9,
+                                    9);
                         }
                     }
 
@@ -252,12 +258,9 @@ public class TooltipOverlayHandler {
                         curScreen.drawTexturedModalRect(
                                 x * 4 / 3,
                                 y * 4 / 3,
-                                effectiveSaturationOfBar >= 1
-                                        ? 27
-                                        : effectiveSaturationOfBar > 0.5
-                                                ? 18
-                                                : effectiveSaturationOfBar > 0.25
-                                                        ? 9
+                                effectiveSaturationOfBar >= 1 ? 27
+                                        : effectiveSaturationOfBar > 0.5 ? 18
+                                                : effectiveSaturationOfBar > 0.25 ? 9
                                                         : effectiveSaturationOfBar > 0 ? 0 : 36,
                                 modifiedSaturationIncrement >= 0 ? 0 : 9,
                                 9,

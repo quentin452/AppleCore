@@ -6,6 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 
 public class MessageSaturationSync implements IMessage, IMessageHandler<MessageSaturationSync, IMessage> {
+
     float saturationLevel;
 
     public MessageSaturationSync() {}

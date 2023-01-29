@@ -1,9 +1,11 @@
 package squeek.applecore.helpers;
 
 import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 public class KeyHelper {
+
     public static boolean isCtrlKeyDown() {
         // prioritize CONTROL, but allow OPTION as well on Mac (note: GuiScreen's isCtrlKeyDown only checks for the
         // OPTION key on Mac)

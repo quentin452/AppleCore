@@ -1,12 +1,5 @@
 package squeek.applecore.client;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -18,14 +11,24 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.opengl.GL11;
+
 import squeek.applecore.ModConfig;
 import squeek.applecore.ModInfo;
 import squeek.applecore.api.AppleCoreAPI;
 import squeek.applecore.api.food.FoodValues;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class HUDOverlayHandler {
+
     float flashAlpha = 0f;
     byte alphaDir = 1;
 
@@ -89,8 +92,7 @@ public class HUDOverlayHandler {
         int newFoodValue = stats.getFoodLevel() + foodValues.hunger;
         float newSaturationValue = stats.getSaturationLevel() + foodValues.getSaturationIncrement();
         drawSaturationOverlay(
-                newSaturationValue > newFoodValue
-                        ? newFoodValue - stats.getSaturationLevel()
+                newSaturationValue > newFoodValue ? newFoodValue - stats.getSaturationLevel()
                         : foodValues.getSaturationIncrement(),
                 stats.getSaturationLevel(),
                 mc,
@@ -99,8 +101,8 @@ public class HUDOverlayHandler {
                 flashAlpha);
     }
 
-    public static void drawSaturationOverlay(
-            float saturationGained, float saturationLevel, Minecraft mc, int left, int top, float alpha) {
+    public static void drawSaturationOverlay(float saturationGained, float saturationLevel, Minecraft mc, int left,
+            int top, float alpha) {
         if (saturationLevel + saturationGained < 0) return;
 
         int startBar = saturationGained != 0 ? Math.max(0, (int) saturationLevel / 2) : 0;
@@ -125,8 +127,8 @@ public class HUDOverlayHandler {
         mc.getTextureManager().bindTexture(Gui.icons);
     }
 
-    public static void drawHungerOverlay(
-            int hungerRestored, int foodLevel, Minecraft mc, int left, int top, float alpha) {
+    public static void drawHungerOverlay(int hungerRestored, int foodLevel, Minecraft mc, int left, int top,
+            float alpha) {
         if (hungerRestored == 0) return;
 
         int startBar = foodLevel / 2;

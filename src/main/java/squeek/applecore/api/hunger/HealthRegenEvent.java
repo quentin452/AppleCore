@@ -3,12 +3,13 @@ package squeek.applecore.api.hunger;
 import static cpw.mods.fml.common.eventhandler.Event.HasResult;
 import static cpw.mods.fml.common.eventhandler.Event.Result;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.MinecraftForge;
+
 import squeek.applecore.api.AppleCoreAPI;
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * Base class for all HealthRegenEvent events.<br>
@@ -16,6 +17,7 @@ import squeek.applecore.api.AppleCoreAPI;
  * All children of this event are fired on the {@link MinecraftForge#EVENT_BUS}.
  */
 public abstract class HealthRegenEvent extends Event {
+
     public final EntityPlayer player;
 
     public HealthRegenEvent(EntityPlayer player) {
@@ -23,7 +25,8 @@ public abstract class HealthRegenEvent extends Event {
     }
 
     /**
-     * Fired each FoodStats update to determine whether or not health regen from food is allowed for the {@link #player}.
+     * Fired each FoodStats update to determine whether or not health regen from food is allowed for the
+     * {@link #player}.
      *
      * This event is fired in {@link FoodStats#onUpdate}.<br>
      * <br>
@@ -36,6 +39,7 @@ public abstract class HealthRegenEvent extends Event {
      */
     @HasResult
     public static class AllowRegen extends HealthRegenEvent {
+
         public AllowRegen(EntityPlayer player) {
             super(player);
         }
@@ -53,6 +57,7 @@ public abstract class HealthRegenEvent extends Event {
      * This event does not have a {@link Result}. {@link HasResult}<br>
      */
     public static class GetRegenTickPeriod extends HealthRegenEvent {
+
         public int regenTickPeriod = 80;
 
         public GetRegenTickPeriod(EntityPlayer player) {
@@ -61,8 +66,8 @@ public abstract class HealthRegenEvent extends Event {
     }
 
     /**
-     * Fired once the ticks since last regen reaches regenTickPeriod (see {@link GetRegenTickPeriod}),
-     * in order to control how regen affects health/exhaustion.
+     * Fired once the ticks since last regen reaches regenTickPeriod (see {@link GetRegenTickPeriod}), in order to
+     * control how regen affects health/exhaustion.
      *
      * This event is fired in {@link FoodStats#onUpdate}.<br>
      * <br>
@@ -76,6 +81,7 @@ public abstract class HealthRegenEvent extends Event {
      */
     @Cancelable
     public static class Regen extends HealthRegenEvent {
+
         public float deltaHealth = 1f;
         public float deltaExhaustion = 3f;
 
@@ -85,8 +91,8 @@ public abstract class HealthRegenEvent extends Event {
     }
 
     /**
-     * Fired every second for each player while in Peaceful difficulty,
-     * in order to control how much health to passively regenerate.
+     * Fired every second for each player while in Peaceful difficulty, in order to control how much health to passively
+     * regenerate.
      *
      * This event is fired in {@link EntityPlayer#onLivingUpdate}.<br>
      * <br>
@@ -101,6 +107,7 @@ public abstract class HealthRegenEvent extends Event {
      */
     @Cancelable
     public static class PeacefulRegen extends HealthRegenEvent {
+
         public float deltaHealth = 1f;
 
         public PeacefulRegen(EntityPlayer player) {

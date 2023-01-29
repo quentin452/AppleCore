@@ -1,6 +1,7 @@
 package squeek.applecore.mixins.early.minecraft.accessors;
 
 import net.minecraft.util.FoodStats;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 

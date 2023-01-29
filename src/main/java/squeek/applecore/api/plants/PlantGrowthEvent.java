@@ -3,13 +3,16 @@ package squeek.applecore.api.plants;
 import static cpw.mods.fml.common.eventhandler.Event.HasResult;
 import static cpw.mods.fml.common.eventhandler.Event.Result;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
+
 public class PlantGrowthEvent extends Event {
+
     /**
      * Fired each plant update tick to determine whether or not growth is allowed for the {@link #block}.
      *
@@ -18,12 +21,12 @@ public class PlantGrowthEvent extends Event {
      * This event is not {@link Cancelable}.<br>
      * <br>
      * This event uses the {@link Result}. {@link HasResult}<br>
-     * {@link Result#DEFAULT} will use the vanilla conditionals.
-     * {@link Result#ALLOW} will allow the growth tick without condition.
-     * {@link Result#DENY} will deny the growth tick without condition.
+     * {@link Result#DEFAULT} will use the vanilla conditionals. {@link Result#ALLOW} will allow the growth tick without
+     * condition. {@link Result#DENY} will deny the growth tick without condition.
      */
     @HasResult
     public static class AllowGrowthTick extends PlantGrowthEvent {
+
         public final Block block;
         public final World world;
         public final int x;
@@ -51,6 +54,7 @@ public class PlantGrowthEvent extends Event {
      * This event does not have a result. {@link HasResult}<br>
      */
     public static class GrowthTick extends PlantGrowthEvent {
+
         public final Block block;
         public final World world;
         public final int x;
