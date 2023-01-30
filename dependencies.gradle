@@ -1,8 +1,8 @@
 // Add your dependencies here
 
 dependencies {
-    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.5:dev") 
-    compileOnly("com.github.GTNewHorizons:Natura:2.4.9:dev") {
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.7:dev") 
+    compileOnly("com.github.GTNewHorizons:Natura:2.5.5:dev") {
         transitive = false
     }
     compileOnly("curse.maven:pams-harvestcraft-221857:2270206") {
